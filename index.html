@@ -482,6 +482,10 @@
         <div class="error-message" id="errorMessage">
             <strong>⚠️ Error Loading Data</strong>
             <p id="errorText">Unable to load data. Please try again.</p>
+            <div id="errorInstructions" style="display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(239, 68, 68, 0.3);">
+                <p style="font-weight: 600; margin-bottom: 8px;">Setup Instructions:</p>
+                <ol id="errorSteps" style="margin-left: 20px; line-height: 1.8;"></ol>
+            </div>
         </div>
 
         <!-- Status Info -->
@@ -552,7 +556,9 @@
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(errorData.message || `Server error: ${response.status}`);
+                    const error = new Error(errorData.message || `Server error: ${response.status}`);
+                    error.instructions = errorData.instructions;
+                    throw error;
                 }
 
                 const data = await response.json();
@@ -737,12 +743,37 @@
 
         /**
          * Displays an error message to the user
-         * @param {string} message - Error message to display
+         * @param {string|Error} messageOrError - Error message or Error object to display
          */
-        function showError(message) {
+        function showError(messageOrError) {
             const errorElement = document.getElementById('errorMessage');
             const errorText = document.getElementById('errorText');
+            const errorInstructions = document.getElementById('errorInstructions');
+            const errorSteps = document.getElementById('errorSteps');
+
+            // Extract message and instructions if Error object is passed
+            const message = typeof messageOrError === 'string'
+                ? messageOrError
+                : messageOrError.message;
+            const instructions = typeof messageOrError === 'object'
+                ? messageOrError.instructions
+                : null;
+
             errorText.textContent = message;
+
+            // Display setup instructions if available
+            if (instructions && Array.isArray(instructions)) {
+                errorSteps.innerHTML = '';
+                instructions.forEach(step => {
+                    const li = document.createElement('li');
+                    li.textContent = step;
+                    errorSteps.appendChild(li);
+                });
+                errorInstructions.style.display = 'block';
+            } else {
+                errorInstructions.style.display = 'none';
+            }
+
             errorElement.classList.add('active');
         }
 

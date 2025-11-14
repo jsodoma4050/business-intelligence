@@ -84,8 +84,16 @@ export default async function handler(req, res) {
     if (!apiKey) {
       console.error('API_KEY environment variable is not configured');
       return res.status(500).json({
-        error: 'Server configuration error',
-        message: 'API authentication is not properly configured'
+        error: 'Missing API Configuration',
+        message: 'API_KEY environment variable is not configured. Please follow these steps:',
+        instructions: [
+          '1. Get a free API key from https://api-ninjas.com',
+          '2. In Vercel Dashboard, go to Settings → Environment Variables',
+          '3. Add a new variable: API_KEY = your-api-ninjas-key',
+          '4. Redeploy your application',
+          '5. For local development, create a .env file with API_KEY=your-key'
+        ],
+        documentation: 'See README.md for detailed setup instructions'
       });
     }
 

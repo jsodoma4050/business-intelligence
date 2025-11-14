@@ -42,6 +42,24 @@ business-intelligence/
 - **Deployment**: Vercel
 - **Design**: High-contrast, WCAG AA compliant
 
+## ⚠️ Quick Fix: API_KEY Error
+
+If you're seeing an error about "API_KEY environment variable is not configured":
+
+1. **Get a free API key** from [API Ninjas](https://api-ninjas.com)
+2. **Add it to Vercel**:
+   - Go to your [Vercel Dashboard](https://vercel.com/dashboard)
+   - Select your project
+   - Navigate to **Settings** → **Environment Variables**
+   - Click **Add New**
+   - Set **Key** to: `API_KEY`
+   - Set **Value** to: your API Ninjas key
+   - Select all environments (Production, Preview, Development)
+   - Click **Save**
+3. **Redeploy** your application (or it will redeploy automatically)
+
+For local development, copy `.env.example` to `.env` and add your API key there.
+
 ## 🚀 Deployment Instructions
 
 ### Prerequisites
@@ -126,8 +144,9 @@ npm install -g vercel
 git clone <your-repo-url>
 cd business-intelligence
 
-# Create .env file with your API key
-echo "API_KEY=your-api-ninjas-key" > .env
+# Copy the example environment file and add your API key
+cp .env.example .env
+# Then edit .env and replace 'your-api-ninjas-key-here' with your actual API key
 
 # Run development server
 vercel dev
