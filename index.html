@@ -429,9 +429,208 @@
             }
         }
 
+        /* ===== TAB NAVIGATION ===== */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0;
+        }
+
+        .tab-btn {
+            padding: 14px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            background: transparent;
+            color: var(--text-secondary);
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            bottom: -2px;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            color: var(--accent-blue);
+            border-bottom-color: var(--accent-blue);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ===== TRANSCRIPT STYLES ===== */
+        .transcript-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .input-group input,
+        .input-group select {
+            padding: 10px 14px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .input-group input {
+            width: 120px;
+            text-transform: uppercase;
+        }
+
+        .input-group select {
+            width: 150px;
+        }
+
+        .transcript-header {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .transcript-header h3 {
+            color: var(--accent-blue);
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+        }
+
+        .transcript-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .transcript-meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .transcript-meta-item strong {
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .transcript-content {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .transcript-entry {
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .transcript-entry:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .speaker-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .speaker-name {
+            font-weight: 700;
+            color: var(--accent-blue);
+            font-size: 1.05rem;
+        }
+
+        .speaker-role {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .speaker-text {
+            color: var(--text-primary);
+            line-height: 1.7;
+            padding-left: 16px;
+            border-left: 3px solid var(--border-color);
+        }
+
+        .participants-list {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .participants-list h4 {
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .participant-item {
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            border-left: 3px solid var(--accent-blue);
+        }
+
+        .participant-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .participant-role {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
         /* ===== ACCESSIBILITY ===== */
         /* Focus states for keyboard navigation */
         .btn:focus,
+        .tab-btn:focus,
         .stock-table tbody tr:focus {
             outline: 3px solid var(--accent-blue);
             outline-offset: 2px;
@@ -466,8 +665,16 @@
             <p class="subtitle">Technology Sector Stock Analysis</p>
         </header>
 
-        <!-- Action Buttons -->
-        <div class="controls">
+        <!-- Tab Navigation -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('stocks')">Stock Dashboard</button>
+            <button class="tab-btn" onclick="switchTab('transcript')">Earnings Transcript</button>
+        </div>
+
+        <!-- Stock Dashboard Tab -->
+        <div id="stocks-tab" class="tab-content active">
+            <!-- Action Buttons -->
+            <div class="controls">
             <button class="btn btn-primary" id="refreshBtn" onclick="fetchStockData()">
                 <span>🔄</span>
                 <span>Refresh Data</span>
@@ -515,6 +722,51 @@
                 </tbody>
             </table>
         </div>
+        </div>
+        <!-- End Stock Dashboard Tab -->
+
+        <!-- Earnings Transcript Tab -->
+        <div id="transcript-tab" class="tab-content">
+            <!-- Transcript Controls -->
+            <div class="transcript-controls">
+                <div class="input-group">
+                    <label for="tickerInput">Ticker:</label>
+                    <input type="text" id="tickerInput" placeholder="e.g., MSFT" maxlength="5" value="MSFT">
+                </div>
+                <div class="input-group">
+                    <label for="yearInput">Year:</label>
+                    <input type="number" id="yearInput" placeholder="2024" min="2020" max="2025" value="2024">
+                </div>
+                <div class="input-group">
+                    <label for="quarterInput">Quarter:</label>
+                    <select id="quarterInput">
+                        <option value="1">Q1</option>
+                        <option value="2" selected>Q2</option>
+                        <option value="3">Q3</option>
+                        <option value="4">Q4</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" id="fetchTranscriptBtn" onclick="fetchTranscript()">
+                    <span>📄</span>
+                    <span>Fetch Transcript</span>
+                </button>
+            </div>
+
+            <!-- Error Message for Transcript -->
+            <div class="error-message" id="transcriptErrorMessage">
+                <strong>⚠️ Error Loading Transcript</strong>
+                <p id="transcriptErrorText">Unable to load transcript. Please try again.</p>
+            </div>
+
+            <!-- Transcript Display Area -->
+            <div id="transcriptDisplay">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📄</div>
+                    <p>Enter a ticker, year, and quarter, then click "Fetch Transcript" to view earnings call details</p>
+                </div>
+            </div>
+        </div>
+        <!-- End Earnings Transcript Tab -->
     </div>
 
     <script>
@@ -793,6 +1045,213 @@
                 }
             }
         });
+
+        // ===== TAB SWITCHING FUNCTIONALITY =====
+
+        /**
+         * Switches between dashboard tabs
+         * @param {string} tabName - Name of the tab to switch to ('stocks' or 'transcript')
+         */
+        function switchTab(tabName) {
+            // Remove active class from all tabs and tab buttons
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Add active class to selected tab and button
+            const selectedTab = document.getElementById(`${tabName}-tab`);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+
+            // Find and activate the corresponding button
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                if (btn.textContent.toLowerCase().includes(tabName)) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // ===== EARNINGS TRANSCRIPT FUNCTIONALITY =====
+
+        /**
+         * Global variable to store current transcript data
+         */
+        let currentTranscriptData = null;
+
+        /**
+         * Fetches earnings call transcript from the API
+         */
+        async function fetchTranscript() {
+            const ticker = document.getElementById('tickerInput').value.trim().toUpperCase();
+            const year = document.getElementById('yearInput').value;
+            const quarter = document.getElementById('quarterInput').value;
+
+            // Validate inputs
+            if (!ticker) {
+                showTranscriptError('Please enter a valid ticker symbol');
+                return;
+            }
+
+            if (!year || year < 2020 || year > 2025) {
+                showTranscriptError('Please enter a valid year (2020-2025)');
+                return;
+            }
+
+            // Show loading state
+            showLoading(true);
+            hideTranscriptError();
+            document.getElementById('fetchTranscriptBtn').disabled = true;
+
+            try {
+                // Call the serverless API function
+                const response = await fetch(`/api/transcript?ticker=${ticker}&year=${year}&quarter=${quarter}`);
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || `Server error: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Store transcript data globally
+                currentTranscriptData = data;
+
+                // Render the transcript
+                renderTranscript(data);
+
+            } catch (error) {
+                console.error('Error fetching transcript:', error);
+                showTranscriptError(error.message);
+            } finally {
+                // Hide loading overlay and re-enable button
+                showLoading(false);
+                document.getElementById('fetchTranscriptBtn').disabled = false;
+            }
+        }
+
+        /**
+         * Renders the earnings transcript to the display area
+         * @param {Object} data - Transcript data from API
+         */
+        function renderTranscript(data) {
+            const displayArea = document.getElementById('transcriptDisplay');
+
+            // Build HTML for the transcript
+            let html = '';
+
+            // Header with metadata
+            html += `
+                <div class="transcript-header">
+                    <h3>${escapeHtml(data.ticker)} - ${data.year} Q${data.quarter} Earnings Call</h3>
+                    <div class="transcript-meta">
+                        <div class="transcript-meta-item">
+                            <strong>Date:</strong>
+                            <span>${new Date(data.date).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            })}</span>
+                        </div>
+                        <div class="transcript-meta-item">
+                            <strong>Ticker:</strong>
+                            <span>${escapeHtml(data.ticker)}</span>
+                        </div>
+                        <div class="transcript-meta-item">
+                            <strong>CIK:</strong>
+                            <span>${escapeHtml(data.cik)}</span>
+                        </div>
+                        <div class="transcript-meta-item">
+                            <strong>Timing:</strong>
+                            <span>${data.earnings_timing.replace('_', ' ')}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Participants list (if available and not just "...")
+            if (data.participants && Array.isArray(data.participants) && data.participants.length > 0) {
+                const validParticipants = data.participants.filter(p =>
+                    typeof p === 'object' && p !== null && p.name !== '...'
+                );
+
+                if (validParticipants.length > 0) {
+                    html += `
+                        <div class="participants-list">
+                            <h4>Participants</h4>
+                    `;
+
+                    validParticipants.forEach(participant => {
+                        html += `
+                            <div class="participant-item">
+                                <div class="participant-name">${escapeHtml(participant.name)}</div>
+                                <div class="participant-role">${escapeHtml(participant.role)} - ${escapeHtml(participant.company)}</div>
+                            </div>
+                        `;
+                    });
+
+                    html += '</div>';
+                }
+            }
+
+            // Transcript content
+            if (data.transcript_split && Array.isArray(data.transcript_split) && data.transcript_split.length > 0) {
+                const validEntries = data.transcript_split.filter(entry =>
+                    typeof entry === 'object' && entry !== null && entry.speaker !== '...'
+                );
+
+                if (validEntries.length > 0) {
+                    html += '<div class="transcript-content">';
+
+                    validEntries.forEach(entry => {
+                        html += `
+                            <div class="transcript-entry">
+                                <div class="speaker-info">
+                                    <span class="speaker-name">${escapeHtml(entry.speaker)}</span>
+                                    ${entry.role ? `<span class="speaker-role">${escapeHtml(entry.role)}</span>` : ''}
+                                </div>
+                                <div class="speaker-text">${escapeHtml(entry.text)}</div>
+                            </div>
+                        `;
+                    });
+
+                    html += '</div>';
+                }
+            } else if (data.transcript) {
+                // Fallback to full transcript if transcript_split is not available
+                html += `
+                    <div class="transcript-content">
+                        <div class="transcript-entry">
+                            <div class="speaker-text">${escapeHtml(data.transcript)}</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            displayArea.innerHTML = html;
+        }
+
+        /**
+         * Shows transcript error message
+         * @param {string} message - Error message to display
+         */
+        function showTranscriptError(message) {
+            const errorElement = document.getElementById('transcriptErrorMessage');
+            const errorText = document.getElementById('transcriptErrorText');
+            errorText.textContent = message;
+            errorElement.classList.add('active');
+        }
+
+        /**
+         * Hides transcript error message
+         */
+        function hideTranscriptError() {
+            document.getElementById('transcriptErrorMessage').classList.remove('active');
+        }
     </script>
 </body>
 </html>
